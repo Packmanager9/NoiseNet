@@ -1280,7 +1280,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             return this.value
         }
         weight() {
-            return  (Math.random()-.5)
+            return  ((Math.random()-.5)*2)/10
         }
         setChange(num) {
             this.change = num
@@ -1291,7 +1291,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
     class Perceptron {
         constructor(inputs) {
-            this.bias = (Math.random() - .5) /100
+            this.bias = (Math.random() - .5)/10
             this.value = this.bias
             this.weights = []
             this.outputConnections = []
@@ -1352,8 +1352,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
     }
     class Network {
         constructor(inputs, layerSetupArray) {
-            this.momentum =.01
-            this.learningRate = .01
+            this.momentum =.1
+            this.learningRate = .1
             this.setup = layerSetupArray
             this.inputs = inputs
             this.structure = []
@@ -1467,15 +1467,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
     TIP_engine.y = 350
     let perc = new Network([new Data(1), new Data(0),new Data(1), new Data(0),new Data(1), new Data(0),new Data(1), new Data(0),new Data(1), new Data(0)], [12,11, 10])
 //10000000
-    for (let t = 0; t < 50000000; t++) {
-        let inputs =[]
-        let goals =[]
+    for (let t = 0; t < 10000000; t++) {
+        // let r1 = Math.random()
+        // let r2 = Math.random()
+        let inputs =[]// [new Data(r1), new Data(r2)]
+        let goals =[]// [new Data(r1), new Data(r2)]
         for(let t = 0;t<10;t++){
             let d = new Data(Math.random())
             inputs.push(d)
             goals.push(d)
         }
         perc.compute(inputs)
+        // let circle = new Circle(perc.outputs[0] * 700, perc.outputs[1] * 700, 3, "red")
+        // circle.draw()
         perc.calculateDeltasSigmoid(goals)
         perc.adjustWeights()
     }
@@ -1489,7 +1493,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
             let layers = this.net.structure.length+1
             this.circles = []
             this.lines = []
-            let step =  canvas.height/(layers+1)
+            let step =  canvas.height/(layers+2)
             for(let t = -1;t<this.net.structure.length;t++){
                 let circlayer = []
                 if(t==-1){
@@ -1531,15 +1535,24 @@ window.addEventListener('DOMContentLoaded', (event) => {
         }
     }
     function main() {
+
         canvas_context.clearRect(0, 0, canvas.width, canvas.height)
         let inputs = [new Data(TIP_engine.x / 700), new Data(TIP_engine.y / 700),  new Data(Math.random()), new Data(Math.random()), new Data(Math.random()), new Data(Math.random()), new Data(Math.random()), new Data(Math.random()), new Data(Math.random()), new Data(Math.random())]
+        let goals =[new Data(TIP_engine.x / 700), new Data(TIP_engine.y / 700), new Data(Math.random()), new Data(Math.random()), new Data(Math.random()), new Data(Math.random()), new Data(Math.random()), new Data(Math.random()), new Data(Math.random()), new Data(Math.random())]
         perc.compute(inputs)
+        // perc.calculateDeltasSigmoid(goals)
+        // perc.adjustWeights()
         let circle = new Circle(perc.outputs[0] * 700, perc.outputs[1] * 700, 3, "red")
         circle.draw()
-        if(keysPressed[' ']){
+        if(keysPressed['h']){
             let vi = new Viewer(perc)
             vi.draw()
             console.log(vi)
+            // for(let t = 0;t<perc.structure.length;t++){
+            //     for(let k = 0;t<perc.structure[k].length;k++){
+            //         // delete perc.structure[t][k].outputConnections
+            //     }
+            // }
         }
     }
 
