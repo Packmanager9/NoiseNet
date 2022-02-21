@@ -1544,7 +1544,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
         // perc.adjustWeights()
         let circle = new Circle(perc.outputs[0] * 700, perc.outputs[1] * 700, 3, "red")
         circle.draw()
-        if(keysPressed['h']){
+        if(keysPressed[' ']){
             let vi = new Viewer(perc)
             vi.draw()
             console.log(vi)
